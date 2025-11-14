@@ -395,11 +395,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Intelligent identification/Intelligent identification.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C8BPYP65B;
+				DEVELOPMENT_TEAM = WTGJGVQPDD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "我们需要访问相机来识别物体并帮助您学习语言。We need camera access to recognize objects and help you learn languages.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "我们需要写入相册以保存识别结果图片。We need permission to save recognition photos to your library.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "我们需要访问相册以选择和保存学习照片。We need photo library access to select and save learning photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -427,11 +431,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Intelligent identification/Intelligent identification.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C8BPYP65B;
+				DEVELOPMENT_TEAM = WTGJGVQPDD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "我们需要访问相机来识别物体并帮助您学习语言。We need camera access to recognize objects and help you learn languages.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "我们需要写入相册以保存识别结果图片。We need permission to save recognition photos to your library.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "我们需要访问相册以选择和保存学习照片。We need photo library access to select and save learning photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -460,7 +468,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C8BPYP65B;
+				DEVELOPMENT_TEAM = WTGJGVQPDD;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
@@ -482,7 +490,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C8BPYP65B;
+				DEVELOPMENT_TEAM = WTGJGVQPDD;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
@@ -501,9 +509,10 @@
 		9CDC04822EAB9B2000E7F44D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C8BPYP65B;
+				DEVELOPMENT_TEAM = WTGJGVQPDD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Jiahong-Chen.trip.Intelligent-identificationUITests";
@@ -521,9 +530,10 @@
 		9CDC04832EAB9B2000E7F44D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C8BPYP65B;
+				DEVELOPMENT_TEAM = WTGJGVQPDD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Jiahong-Chen.trip.Intelligent-identificationUITests";
