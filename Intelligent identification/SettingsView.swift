@@ -70,6 +70,11 @@ struct SettingsView: View {
                             if let url = URL(string: "https://chenjiahong2024.github.io/Intelligent-identification/contact.html") {
                                 openURL(url)
                             }
+                        },
+                        onOpenPrivacy: {
+                            if let url = URL(string: "https://chenjiahong2024.github.io/Intelligent-identification/privacy.html") {
+                                openURL(url)
+                            }
                         }
                     )
                     
@@ -154,6 +159,7 @@ struct SettingsView: View {
 private struct SupportCard: View {
     var onEmail: () -> Void
     var onOpenSite: () -> Void
+    var onOpenPrivacy: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -189,6 +195,16 @@ private struct SupportCard: View {
                 
                 Button(action: onOpenSite) {
                     Label("打开支持网站", systemImage: "safari")
+                        .font(.subheadline.weight(.semibold))
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 16)
+                        .background(AppTheme.surfaceMuted)
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                
+                Button(action: onOpenPrivacy) {
+                    Label("查看隐私政策", systemImage: "hand.raised")
                         .font(.subheadline.weight(.semibold))
                         .padding(.vertical, 10)
                         .padding(.horizontal, 16)
