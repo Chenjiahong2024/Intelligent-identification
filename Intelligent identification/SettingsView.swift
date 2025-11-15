@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct SettingsView: View {
     @AppStorage("nativeLanguage") private var nativeLanguage = "en"
@@ -17,6 +18,7 @@ struct SettingsView: View {
     @EnvironmentObject private var learningStore: LearningRecordStore
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var cloudSync = CloudSyncManager.shared
+    @Environment(\.openURL) private var openURL
     
     let languages = TranslationService.shared.getSupportedLanguages()
     
@@ -56,8 +58,23 @@ struct SettingsView: View {
                         }
                     )
                     
-                APISettingsCard(apiBaseURL: $apiBaseURL, apiKey: $apiKey, modelName: $modelName)
-                
+                    APISettingsCard(apiBaseURL: $apiBaseURL, apiKey: $apiKey, modelName: $modelName)
+                    
+                    SupportCard(
+                        onEmail: {
+                            if let url = URL(string: "mailto:jiahongchen2025@outlook.com?subject=AI%E6%99%BA%E8%83%BD%E8%AF%86%E5%88%AB%E6%94%AF%E6%8C%81&body=%E8%AF%B7%E7%AE%80%E8%BF%B0%E9%97%AE%E9%A2%98%E5%9C%BA%E6%99%AF%E3%80%81%E6%9C%BA%E5%9E%8B%E4%B8%8E%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%AC") {
+                                openURL(url)
+                            }
+                        },
+                        onOpenSite: {
+                            if let url = URL(string: "https://chenjiahong2024.github.io/Intelligent-identification/contact.html") {
+                                openURL(url)
+                            }
+                        }
+                    )
+                    
+                    AccountManagementCard()
+                    
                     AboutCard()
                     InstructionCard()
                     
@@ -131,6 +148,59 @@ struct SettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 12)
+    }
+}
+
+private struct SupportCard: View {
+    var onEmail: () -> Void
+    var onOpenSite: () -> Void
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("帮助与支持")
+                        .font(.headline)
+                        .foregroundStyle(AppTheme.primaryText)
+                    Text("若遇到问题，欢迎通过邮件或支持网站与我们联系。")
+                        .font(.footnote)
+                        .foregroundStyle(AppTheme.secondaryText)
+                }
+            } icon: {
+                Image(systemName: "lifepreserver")
+                    .font(.title3)
+                    .foregroundStyle(AppTheme.accent)
+            }
+            .labelStyle(.leadingIcon)
+            
+            HStack(spacing: 12) {
+                Button(action: onEmail) {
+                    Label("联系支持（邮件）", systemImage: "envelope")
+                        .font(.subheadline.weight(.semibold))
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .fill(AppTheme.buttonGradient)
+                        )
+                        .foregroundStyle(Color.white)
+                }
+                .buttonStyle(.plain)
+                
+                Button(action: onOpenSite) {
+                    Label("打开支持网站", systemImage: "safari")
+                        .font(.subheadline.weight(.semibold))
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 16)
+                        .background(AppTheme.surfaceMuted)
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .glassCardStyle()
     }
 }
 
@@ -276,6 +346,123 @@ private struct CloudSyncCard: View {
         case .idle:
             return AppTheme.secondaryText
         }
+    }
+}
+
+private struct AccountManagementCard: View {
+    @EnvironmentObject private var accountStore: UserAccountStore
+    @AppStorage("hasCompletedLogin") private var hasCompletedLogin = false
+    @State private var showingLogoutConfirm = false
+    @Environment(\.colorScheme) private var colorScheme
+    
+    private var hasAccount: Bool {
+        accountStore.currentAccount != nil
+    }
+    
+    private var currentName: String {
+        accountStore.currentAccount?.displayName.isEmpty == false ? (accountStore.currentAccount?.displayName ?? "") : "未设置昵称"
+    }
+    
+    private var currentIdentifier: String {
+        accountStore.currentAccount?.loginIdentifier ?? "尚未登录"
+    }
+    
+    private var appleLinked: Bool {
+        accountStore.currentAccount?.isAppleLinked ?? false
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("账号")
+                        .font(.headline)
+                        .foregroundStyle(AppTheme.primaryText)
+                    Text("管理登录方式、Apple ID 绑定以及退出登录。")
+                        .font(.footnote)
+                        .foregroundStyle(AppTheme.secondaryText)
+                }
+            } icon: {
+                Image(systemName: "person.crop.circle")
+                    .font(.title3)
+                    .foregroundStyle(AppTheme.accent)
+            }
+            .labelStyle(.leadingIcon)
+            
+            VStack(alignment: .leading, spacing: 6) {
+                Text(currentName)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(AppTheme.primaryText)
+                Text(currentIdentifier)
+                    .font(.footnote)
+                    .foregroundStyle(AppTheme.secondaryText)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
+            .background(AppTheme.surfaceMuted)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 8) {
+                    Image(systemName: appleLinked ? "checkmark.seal.fill" : "applelogo")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(appleLinked ? AppTheme.positive : AppTheme.secondaryText)
+                    Text(appleLinked ? "已绑定 Apple ID" : "未绑定 Apple ID")
+                        .font(.footnote)
+                        .foregroundStyle(AppTheme.secondaryText)
+                }
+                
+                if !appleLinked {
+                    SignInWithAppleButton(.continue) { request in
+                        request.requestedScopes = [.fullName, .email]
+                    } onCompletion: { result in
+                        switch result {
+                        case .success(let auth):
+                            guard let credential = auth.credential as? ASAuthorizationAppleIDCredential else { return }
+                            accountStore.signInWithApple(credential: credential, linkToExistingAccount: true) { _ in }
+                        case .failure:
+                            break
+                        }
+                    }
+                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                    .frame(height: 40)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                }
+            }
+            
+            Divider()
+                .background(AppTheme.divider)
+            
+            Button(role: .destructive) {
+                showingLogoutConfirm = true
+            } label: {
+                HStack {
+                    Spacer()
+                    Text("退出登录 / 更换账号")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                }
+                .padding(.vertical, 12)
+                .background(Color.red.opacity(0.04))
+                .foregroundStyle(Color.red)
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
+            .disabled(!hasAccount)
+            .opacity(hasAccount ? 1 : 0.45)
+            .confirmationDialog("确定要退出当前账号吗？", isPresented: $showingLogoutConfirm, titleVisibility: .visible) {
+                Button("退出登录", role: .destructive) {
+                    accountStore.signOut()
+                    hasCompletedLogin = false
+                }
+                Button("取消", role: .cancel) { }
+            } message: {
+                Text("退出后需要重新登录，学习记录仍会保留在本地及已同步的 iCloud 中。")
+            }
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .glassCardStyle()
     }
 }
 
@@ -538,5 +725,5 @@ private struct InstructionRow: View {
 #Preview {
     SettingsView()
         .environmentObject(LearningRecordStore())
+        .environmentObject(UserAccountStore.shared)
 }
-
